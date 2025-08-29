@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medhat - Creative Profile</title>
+    <title>Medhat - Creative Profile (Updated)</title>
     <!-- Importing a new, modern font: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,9 +21,43 @@
             min-height: 100vh;
             overflow-x: hidden; /* To prevent scrollbars from the parallax effect */
             transition: background-color 0.3s ease, color 0.3s ease;
-            
-            /* The new retro cursor effect */
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="black" d="M3.243 0L32 15.654 18.064 18.361 14.53 32.091 3.243 0z"/></svg>') 10 10, auto;
+        }
+
+        /* Dark theme styles for the entire page */
+        body.dark-theme {
+            background-color: #111;
+            color: #f0f0f0;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="white" d="M3.243 0L32 15.654 18.064 18.361 14.53 32.091 3.243 0z"/></svg>') 10 10, auto;
+        }
+        body.dark-theme .written-books,
+        body.dark-theme footer {
+            border-top: 1px solid #444;
+        }
+        body.dark-theme .book-card {
+            background-color: #222;
+            border-color: #333;
+            color: #f0f0f0;
+        }
+        body.dark-theme .book-card:hover {
+            box-shadow: 0 15px 25px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-theme .book-description-overlay {
+            background-color: #333;
+        }
+        body.dark-theme .icon-link svg {
+            fill: #f0f0f0;
+        }
+        body.dark-theme .icon-link:hover svg {
+            fill: #aaa;
+        }
+        body.dark-theme .theme-toggle-button {
+            color: #f0f0f0;
+            border-color: #f0f0f0;
+        }
+        body.dark-theme .theme-toggle-button:hover {
+            background-color: #f0f0f0;
+            color: #111;
         }
 
         /* Container for the main content to keep it centered and spaced */
@@ -33,7 +67,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: flex-start;
-            padding: 50px;
+            padding: clamp(30px, 5vw, 50px);
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
@@ -64,7 +98,7 @@
             transform: translateY(20px);
             animation: letter-pop 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
         }
-        
+
         /* Setting animation delays for each letter */
         .medhat-name span:nth-child(1) { animation-delay: 0.1s; }
         .medhat-name span:nth-child(2) { animation-delay: 0.2s; }
@@ -89,18 +123,18 @@
             font-size: clamp(0.9rem, 2vw, 1.2rem);
             text-transform: uppercase;
             line-height: 1.5;
-            margin-top: 50px;
+            margin-top: clamp(30px, 6vw, 50px);
         }
 
         /* --- Written Books Section --- */
         .written-books {
-            margin-top: 100px;
-            padding-top: 50px;
+            margin-top: clamp(50px, 10vw, 100px);
+            padding-top: clamp(25px, 5vw, 50px);
             border-top: 1px solid #c0c0c0;
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 40px;
+            gap: clamp(20px, 5vw, 40px);
         }
 
         .books-title {
@@ -113,7 +147,7 @@
         .book-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
+            gap: clamp(15px, 4vw, 30px);
         }
 
         .book-card {
@@ -129,9 +163,10 @@
                         box-shadow 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             z-index: 1;
             cursor: pointer;
-            height: 380px; /* Fixed height for consistent layout */
+            /* Use aspect-ratio instead of fixed height for responsiveness */
+            aspect-ratio: 2 / 3;
         }
-        
+
         /* The container for the book image */
         .book-image-container {
             width: 100%;
@@ -171,15 +206,15 @@
             transition: opacity 0.5s ease, visibility 0.5s;
             border-radius: 8px;
         }
-        
+
         .book-description-overlay h3 {
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 2vw, 1.2rem);
             margin-bottom: 10px;
             text-transform: capitalize;
         }
 
         .book-description-overlay p {
-            font-size: 0.9rem;
+            font-size: clamp(0.8rem, 1.5vw, 0.9rem);
             line-height: 1.4;
         }
 
@@ -193,7 +228,6 @@
         .book-card:hover .book-image-container {
             opacity: 0;
         }
-
         .book-card:hover .book-description-overlay {
             opacity: 1;
             visibility: visible;
@@ -202,14 +236,38 @@
         /* --- Footer Section --- */
         footer {
             margin-top: auto;
-            padding: 30px 50px;
+            padding: 30px clamp(30px, 5vw, 50px);
             border-top: 1px solid #c0c0c0;
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             align-items: center;
             gap: 20px;
+            flex-wrap: wrap;
         }
-        
+
+        /* Styles for the theme toggle button */
+        .theme-toggle-button {
+            background: none;
+            border: 1px solid #111;
+            color: #111;
+            padding: 8px 16px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .theme-toggle-button:hover {
+            background-color: #111;
+            color: #f0f0f0;
+        }
+        .theme-toggle-button:focus {
+            outline: none;
+        }
+
         /* Styles for the SVG icon */
         .icon-link svg {
             width: 1.2em; /* Match icon size to font size */
@@ -217,12 +275,12 @@
             fill: #111; /* Match icon color to text color */
             transition: fill 0.3s ease;
         }
-        
+
         .icon-link:hover svg {
             fill: #888;
         }
 
-        /* --- Responsive Design --- */
+        /* --- Responsive Design (Refined) --- */
         @media (max-width: 768px) {
             .container {
                 padding: 30px;
@@ -232,12 +290,13 @@
 
             .main-content {
                 padding: 0;
+                margin-top: 0;
             }
-            
+
             .main-content .text-block {
                 margin-top: 30px;
             }
-            
+
             .written-books {
                 margin-top: 50px;
             }
@@ -267,10 +326,6 @@
             <p class="text-block">
                 I’ve written a bunch of books—yeah, I know, kinda crazy—but mostly about stuff that hits when boredom strikes, random ideas, and things I just couldn’t stop thinking about. This site is basically my little corner to showcase my books, share some of my thoughts, and maybe inspire someone to dive into weird, cool ideas too.
             </p>
-            <!-- <p class="text-block">
-                I'M ALWAYS LEARNING, AND THAT STARTS<br>
-                WITH A GOOD BOOK.
-            </p> -->
         </div>
 
         <!-- Written Books Section -->
@@ -287,7 +342,7 @@
                         <p>Navier-Stokes Turbulence provides a focused exploration of turbulence modeling and simulation. From the mathematical foundations of the Navier-Stokes equations to computational approaches and modern data-driven methods.</p>
                     </div>
                 </div>
-                
+
                 <!-- Book Card 2 -->
                 <div class="book-card">
                     <div class="book-image-container">
@@ -298,7 +353,7 @@
                         <p>Hands-on deep learning projects, from building neural networks to deploying models efficiently using PyTorch.</p>
                     </div>
                 </div>
-                
+
                 <!-- Book Card 3 -->
                 <div class="book-card">
                     <div class="book-image-container">
@@ -309,40 +364,38 @@
                         <p>12 Algorithms You Must Know introduces the core machine learning algorithms that form the foundation of modern AI. From linear regression and decision trees to clustering, boosting, and neural networks, each algorithm is explained with clear intuition and practical examples.</p>
                     </div>
                 </div>
-                
+
                 <!-- Book Card 4 -->
                 <div class="book-card">
                     <div class="book-image-container">
                         <img src="tcfd.png" alt="Generative AI: The Art of Creation book cover" class="book-cover">
                     </div>
                     <div class="book-description-overlay">
-                        <h3>Theoretical And Computational Fluid dynamics</h3>
-<p>Theoretical and CFD connects the fundamentals of fluid mechanics and applied mathematics with computational fluid dynamics. It introduces theoretical principles, numerical methods, and simulation practices.</p>
+                        <h3>Theoretical And Computational Fluid dynamics</h3><p>Theoretical and CFD connects the fundamentals of fluid mechanics and applied mathematics with computational fluid dynamics. It introduces theoretical principles, numerical methods, and simulation practices.</p>
                     </div>
                 </div>
-                
+
                 <!-- Book Card 5 -->
                 <div class="book-card">
                     <div class="book-image-container">
-                        <img src="pytorc.png"Data Structures and Algorithms in Python book cover" class="book-cover">
+                        <img src="pytorc.png" alt="Data Structures and Algorithms in Python book cover" class="book-cover">
                     </div>
                     <div class="book-description-overlay">
                         <h3>Getting Started with PyTorch: A hands-on Guide</h3>
                         <p>Learning to Train Machine Learning Models with PyTorch. A high-performance Machine learning library to build Production ready Machine learning Applications.</p>
                     </div>
                 </div>
-                
+
                 <!-- Book Card 6 -->
                 <div class="book-card">
                     <div class="book-image-container">
                         <img src="scikitlearn.png" alt="Modern Web Development with React book cover" class="book-cover">
                     </div>
                     <div class="book-description-overlay">
-                        <h3>Getting Started with sciki-learn: Train ML Models</h3>
-<p>Getting Started with Scikit-Learn introduces one of the most widely used libraries for machine learning in Python. Covering essential algorithms, data preprocessing, and model evaluation.</p>
+                        <h3>Getting Started with sciki-learn: Train ML Models</h3><p>Getting Started with Scikit-Learn introduces one of the most widely used libraries for machine learning in Python. Covering essential algorithms, data preprocessing, and model evaluation.</p>
                     </div>
                 </div>
-                
+
                 <!-- Book Card 7 -->
                 <div class="book-card">
                     <div class="book-image-container">
@@ -353,18 +406,17 @@
                         <p>Solve complex partial differential equations using numerical methods and modern deep learning approaches..</p>
                     </div>
                 </div>
-                
+
                 <!-- Book Card 8 -->
                 <div class="book-card">
                     <div class="book-image-container">
                         <img src="parrot.png" alt="Machine Learning Fundamentals book cover" class="book-cover">
                     </div>
                     <div class="book-description-overlay">
-                        <h3>Context Engineering: A guide to Information Architecture</h3>
-<p>Craft effective prompts to guide AI models, enhancing outputs in practical applications.</p>
+                        <h3>Context Engineering: A guide to Information Architecture</h3><p>Craft effective prompts to guide AI models, enhancing outputs in practical applications.</p>
                     </div>
                 </div>
-                
+
                 <!-- Book Card 9 -->
                  <div class="book-card">
                     <div class="book-image-container">
@@ -375,6 +427,7 @@
                         <p>Build high-performance financial models and simulations using modern C++ techniques.</p>
                     </div>
                 </div>
+
                 <!-- Book Card 10 -->
                 <div class="book-card">
                     <div class="book-image-container">
@@ -385,16 +438,17 @@
                         <p>Implement and deploy deep learning models efficiently using TensorFlow framework.</p>
                     </div>
                 </div>
-                    <div class="book-card">
+
+                <div class="book-card">
                     <div class="book-image-container">
                         <img src="cardio.png" alt="The DevOps Handbook book cover" class="book-cover">
                     </div>
                     <div class="book-description-overlay">
-                        <h3>Computational Methods For Cardiovascular Signal Analysis</h3>
- <p>Dive into the world of Biomedical Engineering! Learn how to record, process, and interpret ECG, PPG, and other cardiovascular data</p>
+                        <h3>Computational Methods For Cardiovascular Signal Analysis</h3> <p>Dive into the world of Biomedical Engineering! Learn how to record, process, and interpret ECG, PPG, and other cardiovascular data</p>
                     </div>
                 </div>
-                    <div class="book-card">
+
+                <div class="book-card">
                     <div class="book-image-container">
                         <img src="drll.png" alt="The DevOps Handbook book cover" class="book-cover">
                     </div>
@@ -406,14 +460,12 @@
             </div>
         </section>
     </div>
-    
+
     <!-- Footer Section -->
     <footer>
-        <!-- <a href="#" class="icon-link">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                <path d="M480 32.1c0-11.8-9.4-21.4-21.4-21.4h-165.7c-11.8 0-21.4 9.6-21.4 21.4v447.8c0 11.8 9.6 21.4 21.4 21.4h165.7c11.8 0 21.4-9.6 21.4-21.4V32.1zM203 32.1c0-11.8-9.4-21.4-21.4-21.4H15.9c-11.8 0-21.4 9.6-21.4 21.4v447.8c0 11.8 9.6 21.4 21.4 21.4h165.7c11.8 0 21.4-9.6 21.4-21.4V32.1z"/>
-            </svg>
-        </a> -->
+        <button id="theme-toggle" class="theme-toggle-button">
+            <span>Toggle Theme</span>
+        </button>
         <p>Medhat :P</p>
     </footer>
 
@@ -428,6 +480,30 @@
 
             // Apply the transform for the parallax effect on the main content
             mainContent.style.transform = `translate(${x}px, ${y}px)`;
+        });
+
+        // JavaScript for the theme toggling functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggleButton = document.getElementById('theme-toggle');
+            const body = document.body;
+
+            // Check for saved theme preference in localStorage on page load
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-theme');
+            }
+
+            // Event listener to toggle the theme
+            themeToggleButton.addEventListener('click', () => {
+                body.classList.toggle('dark-theme');
+
+                // Save the new theme preference to localStorage
+                if (body.classList.contains('dark-theme')) {
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    localStorage.setItem('theme', 'light');
+                }
+            });
         });
     </script>
 </body>

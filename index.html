@@ -19,25 +19,16 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            overflow-x: hidden;
+            overflow-x: hidden; /* To prevent scrollbars from the parallax effect */
             transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        /* The canvas for the background animation */
-        #background-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background-color: transparent;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="black" d="M3.243 0L32 15.654 18.064 18.361 14.53 32.091 3.243 0z"/></svg>') 10 10, auto;
         }
 
         /* Dark theme styles for the entire page */
         body.dark-theme {
             background-color: #111;
             color: #f0f0f0;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="white" d="M3.243 0L32 15.654 18.064 18.361 14.53 32.091 3.243 0z"/></svg>') 10 10, auto;
         }
         body.dark-theme .written-books,
         body.dark-theme footer {
@@ -87,7 +78,8 @@
         /* --- Main Text Section --- */
         .main-content {
             padding: 0;
-            margin-top: -50px;
+            margin-top: -50px; /* Adjusting for a cleaner vertical alignment */
+            transition: transform 0.2s ease-out; /* For the parallax effect */
         }
 
         .main-content h1 {
@@ -323,8 +315,6 @@
     </style>
 </head>
 <body>
-    <!-- Canvas for the background animation -->
-    <canvas id="background-canvas"></canvas>
 
     <div class="container">
         <!-- Main content area with large text blocks -->
@@ -504,6 +494,7 @@ ideas in a simplified manner—no heavy jargon.</p>
                         <h3>Deep Reinforcement Learning in Finance </h3>
                         <p>Deep Reinforcement Learning for Financial Engineering explores how modern RL techniques can be applied to trading, portfolio optimization, risk management, and algorithmic decision-making.</p>
                     </div>
+                    
                 </div>
                 <div class="book-card">
                     <div class="book-image-container">
@@ -520,7 +511,9 @@ ideas in a simplified manner—no heavy jargon.</p>
                     <div class="book-description-overlay">
                         <h3>Sociological Repression in Pakistan<br>v1:Emotional Basis of human behavior</h3><p><i>“Repression is the cornerstone on which the whole structure of psychoanalysis rests.” — Sigmund Freud</i></p>
                     </div>
-                     <div class="book-image-container">
+                </div>
+                <div class="book-card">
+                    <div class="book-image-container">
                         <img src="algorithms.png" alt="Machine Learning Fundamentals book cover" class="book-cover">
                     </div>
                     <div class="book-description-overlay">
@@ -539,127 +532,41 @@ ideas in a simplified manner—no heavy jargon.</p>
     </footer>
 
     <script>
+        // JavaScript for the parallax-like mouse movement effect
+        document.addEventListener('mousemove', (e) => {
+            const mainContent = document.querySelector('.main-content');
+
+            // Calculate the position relative to the center of the viewport
+            const x = (window.innerWidth / 2 - e.clientX) / 40;
+            const y = (window.innerHeight / 2 - e.clientY) / 40;
+
+            // Apply the transform for the parallax effect on the main content
+            mainContent.style.transform = `translate(${x}px, ${y}px)`;
+        });
+
+        // JavaScript for the theme toggling functionality
         document.addEventListener('DOMContentLoaded', () => {
             const themeToggleButton = document.getElementById('theme-toggle');
             const body = document.body;
-            const canvas = document.getElementById('background-canvas');
-            const ctx = canvas.getContext('2d');
-            
-            let particles = [];
-            let mouse = { x: null, y: null, radius: 150 };
 
-            // Function to update particle color based on the current theme
-            function getParticleColor() {
-                return body.classList.contains('dark-theme') ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
-            }
-
-            // Function to set up the canvas dimensions
-            function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-            
-            // Particle class
-            class Particle {
-                constructor(x, y) {
-                    this.x = x;
-                    this.y = y;
-                    this.size = Math.random() * 5 + 1;
-                    this.baseSize = this.size;
-                    this.color = getParticleColor();
-                    this.speedX = Math.random() * 2 - 1;
-                    this.speedY = Math.random() * 2 - 1;
-                }
-
-                draw() {
-                    ctx.fillStyle = this.color;
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-
-                update() {
-                    this.x += this.speedX;
-                    this.y += this.speedY;
-
-                    // Re-draw at the opposite side when a particle moves off-screen
-                    if (this.x < 0 || this.x > canvas.width) this.speedX = -this.speedX;
-                    if (this.y < 0 || this.y > canvas.height) this.speedY = -this.speedY;
-
-                    // Interaction with mouse
-                    const dx = mouse.x - this.x;
-                    const dy = mouse.y - this.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < mouse.radius) {
-                        const repelForce = mouse.radius / distance;
-                        this.x -= dx / repelForce;
-                        this.y -= dy / repelForce;
-                        this.size = this.baseSize * 1.5;
-                    } else {
-                        this.size = this.baseSize;
-                    }
-                }
-            }
-
-            function init() {
-                particles = [];
-                for (let i = 0; i < 150; i++) {
-                    const x = Math.random() * canvas.width;
-                    const y = Math.random() * canvas.height;
-                    particles.push(new Particle(x, y));
-                }
-            }
-
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                for (const particle of particles) {
-                    particle.update();
-                    particle.draw();
-                }
-                requestAnimationFrame(animate);
-            }
-
-            // Event listeners
-            window.addEventListener('resize', () => {
-                resizeCanvas();
-                init();
-            });
-
-            canvas.addEventListener('mousemove', (e) => {
-                mouse.x = e.x;
-                mouse.y = e.y;
-            });
-
-            canvas.addEventListener('mouseleave', () => {
-                mouse.x = null;
-                mouse.y = null;
-            });
-
-            // Theme toggle logic
+            // Check for saved theme preference in localStorage on page load
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'dark') {
                 body.classList.add('dark-theme');
             }
+
+            // Event listener to toggle the theme
             themeToggleButton.addEventListener('click', () => {
                 body.classList.toggle('dark-theme');
-                // Update particle colors immediately on theme change
-                for (const particle of particles) {
-                    particle.color = getParticleColor();
-                }
+
+                // Save the new theme preference to localStorage
                 if (body.classList.contains('dark-theme')) {
                     localStorage.setItem('theme', 'dark');
                 } else {
                     localStorage.setItem('theme', 'light');
                 }
             });
-
-            resizeCanvas();
-            init();
-            animate();
         });
     </script>
 </body>
 </html>
-
-
